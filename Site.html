@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0c0c0d">
+<title>تحدي 90</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="icon" type="image/png" href="favicon.png">
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0c0c0d;--s1:#141416;--s2:#1c1c1f;--bd:#27272b;--tx:#ececee;--mu:#8d8d95;--g:#3fb37f;--o:#e39a3b;--r:#d65a52;--rad:12px;color-scheme:dark}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--tx);font:15px/1.65 'Tajawal',system-ui,'Segoe UI',Tahoma,sans-serif;min-height:100vh}
+a{color:inherit;text-decoration:none}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer;background:none;border:0}
+svg{display:block}
+h1{font-size:22px;font-weight:700}
+h2{font-size:14px;font-weight:700;color:var(--mu)}
+.top{position:sticky;top:0;z-index:20;background:var(--bg);border-bottom:1px solid var(--bd)}
+.top .in{max-width:880px;margin:auto;padding:0 16px;height:56px;display:flex;align-items:center;gap:20px}
+.brand{font-weight:700;font-size:18px}
+.dnav{display:flex;gap:4px;flex:1}
+.dnav a{padding:6px 14px;border-radius:8px;color:var(--mu);transition:.15s}
+.dnav a:hover{color:var(--tx)}
+.dnav a.on{color:var(--tx);background:var(--s2)}
+.tools{display:flex;gap:4px;margin-inline-start:auto}
+.ib{width:34px;height:34px;border-radius:8px;display:grid;place-items:center;color:var(--mu);transition:.15s;flex:none}
+.ib:hover{background:var(--s2);color:var(--tx)}
+.ib:disabled{opacity:.3;cursor:default;background:none}
+main{max-width:880px;margin:auto;padding:20px 16px 100px}
+.card{background:var(--s1);border:1px solid var(--bd);border-radius:var(--rad)}
+.pad{padding:16px}
+.list{padding:0 16px}
+.sec{margin-top:20px}
+.sh{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;gap:10px}
+.ph{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;gap:10px}
+.mu{color:var(--mu);font-size:13px}
+.center{text-align:center}
+.row{display:flex;align-items:center;gap:12px;padding:12px 0;border-top:1px solid var(--bd)}
+.row:first-child{border-top:0}
+.grow{flex:1;min-width:0}
+.nm{font-weight:500;unicode-bidi:plaintext;overflow-wrap:anywhere}
+a.nm:hover{text-decoration:underline}
+.sub{color:var(--mu);font-size:13px;unicode-bidi:plaintext;overflow-wrap:anywhere}
+.meta{display:flex;flex-wrap:wrap;gap:10px;align-items:center;color:var(--mu);font-size:12.5px;margin-top:2px}
+.chip{display:inline-flex;align-items:center;gap:6px}
+.chip i{width:8px;height:8px;border-radius:50%;display:inline-block}
+.ck{width:24px;height:24px;border-radius:7px;border:1.5px solid #3a3a40;display:grid;place-items:center;color:#05150d;flex:none;transition:.15s}
+.ck:hover{border-color:var(--mu)}
+.ck.on{background:var(--g);border-color:var(--g)}
+.task.done .nm{color:var(--mu);text-decoration:line-through}
+.st{display:flex;gap:6px;flex:none}
+.sb{width:34px;height:34px;border-radius:50%;border:1.5px solid var(--bd);display:grid;place-items:center;color:var(--mu);transition:.15s}
+.sb.done:hover{border-color:var(--g);color:var(--g)}
+.sb.partial:hover{border-color:var(--o);color:var(--o)}
+.sb.missed:hover{border-color:var(--r);color:var(--r)}
+.sb.done.on{background:var(--g);border-color:var(--g);color:#05150d}
+.sb.partial.on{background:var(--o);border-color:var(--o);color:#1a1004}
+.sb.missed.on{background:var(--r);border-color:var(--r);color:#1a0705}
+.dots{display:inline-flex;gap:3px}
+.dots i{width:8px;height:8px;border-radius:50%;background:var(--s2);border:1px solid var(--bd)}
+.dots .d-done{background:var(--g);border-color:var(--g)}
+.dots .d-partial{background:var(--o);border-color:var(--o)}
+.dots .d-missed{background:var(--r);border-color:var(--r)}
+.btn{padding:8px 16px;border-radius:9px;border:1px solid var(--bd);background:var(--s2);font-weight:500;transition:.15s;display:inline-flex;align-items:center;gap:6px;justify-content:center}
+.btn:hover{border-color:#44444b}
+.btn.pri{background:var(--tx);color:#0c0c0d;border-color:var(--tx)}
+.btn.pri:hover{opacity:.9}
+.btn.dng{color:var(--r)}
+.link{color:var(--mu);font-size:13px;text-decoration:underline}
+.link:hover{color:var(--tx)}
+input,select,textarea{width:100%;background:var(--bg);border:1px solid var(--bd);border-radius:9px;padding:9px 12px;outline:0;transition:.15s}
+input:focus,select:focus,textarea:focus{border-color:#5a5a63}
+input[type=checkbox]{width:auto}
+input[type=color]{width:36px;height:36px;padding:2px;flex:none;cursor:pointer}
+textarea{resize:vertical;min-height:90px}
+label.f{display:block;margin-top:14px}
+label.f>span{display:block;font-size:13px;color:var(--mu);margin-bottom:5px}
+label.chk{display:flex;gap:8px;align-items:center;margin-top:14px;color:var(--mu);font-size:14px}
+.qa{display:flex;gap:8px;padding:12px 0;border-top:1px solid var(--bd)}
+.qa input[name=n]{flex:1;min-width:0}
+.qa select{width:auto;max-width:130px}
+.tabs{display:flex;background:var(--s1);border:1px solid var(--bd);border-radius:10px;padding:3px;gap:2px}
+.tab{flex:1;padding:8px 6px;border-radius:8px;color:var(--mu);transition:.15s;font-weight:500}
+.tab:hover{color:var(--tx)}
+.tab.on{background:var(--s2);color:var(--tx)}
+.pnav{display:flex;align-items:center;gap:8px;margin:14px 0}
+.lbl{font-weight:700}
+.bar{height:6px;background:var(--s2);border-radius:9px;overflow:hidden}
+.bar>i{display:block;height:100%;background:var(--tx);border-radius:9px;transition:width .35s}
+.big{font-size:26px;font-weight:700;line-height:1.3}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:10px;margin-top:14px}
+.stat{background:var(--bg);border:1px solid var(--bd);border-radius:10px;padding:10px 12px}
+.stat b{display:block;font-size:22px;line-height:1.3}
+.stat span{color:var(--mu);font-size:12.5px}
+.grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+.wd{text-align:center;font-size:12px;color:var(--mu);padding-bottom:2px}
+.cell{aspect-ratio:1;border-radius:10px;border:1px solid var(--bd);background:var(--s1);display:flex;flex-direction:column;align-items:center;justify-content:center;transition:.15s;line-height:1.2}
+.cell:hover{border-color:#55555e}
+.cell .n{font-weight:700;font-size:15px}
+.cell .d{font-size:10.5px;color:var(--mu)}
+.cell.s-done{background:rgba(63,179,127,.17);border-color:rgba(63,179,127,.55)}
+.cell.s-partial{background:rgba(227,154,59,.17);border-color:rgba(227,154,59,.55)}
+.cell.s-missed{background:rgba(214,90,82,.17);border-color:rgba(214,90,82,.55)}
+.cell.today{outline:2px solid var(--tx);outline-offset:1px}
+.pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:8px}
+.pgrid .cell{aspect-ratio:auto;padding:12px 8px}
+.legend{display:flex;flex-wrap:wrap;gap:14px;color:var(--mu);font-size:13px;margin-bottom:14px}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{width:10px;height:10px;border-radius:50%;display:inline-block}
+.badge{font-size:12.5px;padding:2px 10px;border-radius:20px;border:1px solid var(--bd);color:var(--mu);white-space:nowrap}
+.badge.s-done{color:var(--g);border-color:rgba(63,179,127,.5)}
+.badge.s-partial{color:var(--o);border-color:rgba(227,154,59,.5)}
+.badge.s-missed{color:var(--r);border-color:rgba(214,90,82,.5)}
+.empty{color:var(--mu);text-align:center;padding:22px 10px;font-size:14px}
+.ov{position:fixed;inset:0;background:rgba(0,0,0,.65);display:flex;align-items:center;justify-content:center;padding:16px;z-index:50}
+.md{background:var(--s1);border:1px solid var(--bd);border-radius:14px;width:100%;max-width:480px;max-height:90vh;overflow:auto;padding:20px}
+.mh{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:6px}
+.mh .x{margin-inline-start:auto}
+.mt{font-size:18px;font-weight:700}
+.md h2{margin:18px 0 4px}
+.acts{display:flex;gap:8px;margin-top:18px}
+.acts .btn{flex:1}
+.crow{display:flex;gap:8px;align-items:center;margin-top:8px}
+.crow .ic{width:56px;text-align:center;flex:none;padding:9px 4px}
+.bnav{display:none;position:fixed;bottom:0;left:0;right:0;background:var(--s1);border-top:1px solid var(--bd);padding-bottom:env(safe-area-inset-bottom);z-index:20}
+.bnav a{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 0;font-size:11.5px;color:var(--mu)}
+.bnav a.on{color:var(--tx)}
+@media(max-width:700px){
+ .dnav{display:none}.bnav{display:flex}
+ .ov{align-items:flex-end;padding:0}
+ .md{border-radius:16px 16px 0 0;max-height:92vh;max-width:none}
+ .big{font-size:22px}
+ .grid{gap:4px}.cell .d{display:none}
+ .row{gap:10px}
+ .sb{width:32px;height:32px}
+ .qa select{max-width:96px}
+}
+</style>
+</head>
+<body>
+<header class="top"><div class="in">
+ <a class="brand" href="#/">تحدي 90</a>
+ <nav class="dnav" id="dnav"></nav>
+ <div class="tools" id="tools"></div>
+</div></header>
+<main id="view"></main>
+<nav class="bnav" id="bnav"></nav>
+<div id="modal"></div>
+
+<script>
+(()=>{
+'use strict';
+/* ---------- helpers ---------- */
+const KEY='tahaddi90.v1',DAY=864e5;
+const pad=n=>String(n).padStart(2,'0');
+const fmtKey=d=>`${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
+const parseKey=k=>{const[a,b,c]=k.split('-').map(Number);return new Date(a,b-1,c)};
+const addDays=(k,n)=>{const d=parseKey(k);d.setDate(d.getDate()+n);return fmtKey(d)};
+const diffDays=(a,b)=>Math.round((parseKey(b)-parseKey(a))/DAY);
+const todayKey=()=>fmtKey(new Date());
+const uid=()=>Math.random().toString(36).slice(2,8)+Date.now().toString(36);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const $=s=>document.querySelector(s);
+const LOC='ar-u-ca-gregory-nu-latn';
+const F1=new Intl.DateTimeFormat(LOC,{weekday:'long',day:'numeric',month:'long'});
+const F2=new Intl.DateTimeFormat(LOC,{day:'numeric',month:'long'});
+const F3=new Intl.DateTimeFormat(LOC,{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+const F4=new Intl.DateTimeFormat(LOC,{weekday:'short'});
+const fDay=k=>F1.format(parseKey(k)),fShort=k=>F2.format(parseKey(k)),fFull=k=>F3.format(parseKey(k)),fWd=k=>F4.format(parseKey(k));
+const afterDays=n=>n===1?'يوم واحد':n===2?'يومين':n<=10?`${n} أيام`:`${n} يومًا`;
+const unitWord=(n,f)=>{const w={day:['يوم','يومان','أيام','يومًا'],week:['أسبوع','أسبوعان','أسابيع','أسبوعًا'],month:['شهر','شهران','أشهر','شهرًا']}[f];return n===1?w[0]:n===2?w[1]:n<=10?w[2]:w[3]};
+
+/* ---------- icons ---------- */
+const sv=(p,x='')=>`<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${p}${x}</svg>`;
+const ICON={
+ check:sv('<path d="M5 12.5l4.5 4.5L19 7.5"/>'),
+ half:sv('<circle cx="12" cy="12" r="8"/><path d="M12 4a8 8 0 0 0 0 16z" fill="currentColor"/>'),
+ x:sv('<path d="M6 6l12 12M18 6L6 18"/>'),
+ edit:sv('<path d="M4 20h4L19 9l-4-4L4 16z"/>'),
+ trash:sv('<path d="M5 7h14M10 11v6M14 11v6M6 7l1 12h10l1-12M9 7V4h6v3"/>'),
+ plus:sv('<path d="M12 5v14M5 12h14"/>'),
+ back:sv('<path d="M9 6l6 6-6 6"/>'),
+ fwd:sv('<path d="M15 6l-6 6 6 6"/>'),
+ tag:sv('<path d="M3 12V4h8l10 10-8 8z"/><circle cx="7.5" cy="8.5" r="1"/>'),
+ gear:sv('<circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2"/>'),
+ home:sv('<path d="M4 11l8-7 8 7v9H4z"/>'),
+ habits:sv('<path d="M4 12a8 8 0 0 1 14-5l2 2M20 12a8 8 0 0 1-14 5l-2-2"/><path d="M20 4v5h-5M4 20v-5h5"/>'),
+ cal:sv('<rect x="4" y="5" width="16" height="15" rx="2"/><path d="M4 10h16M9 3v4M15 3v4"/>')
+};
+
+/* ---------- state ---------- */
+const PALETTE=['#7c9cbf','#b58fbf','#8fbf9f','#bfa77c','#bf8f8f','#7cb5bf','#a3a3ad','#c4b86a'];
+const defaults=()=>({startDate:'2026-10-03',cats:['الدراسة','الرياضة','العمل','الصحة','القراءة'].map((name,i)=>({id:uid(),name,color:PALETTE[i],icon:''})),tasks:[],habits:[],log:{},notes:{}});
+function load(){try{const r=localStorage.getItem(KEY);if(r)return Object.assign(defaults(),JSON.parse(r))}catch(e){}return defaults()}
+let S=load();
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){alert('تعذّر الحفظ في المتصفح.')}}
+
+/* ---------- periods (day / week / month) ---------- */
+const FREQ={day:{len:1},week:{len:7},month:{len:30}};
+const GT={day:'عادات يومية',week:'عادات أسبوعية',month:'عادات شهرية'};
+const endKey=()=>addDays(S.startDate,89);
+const idxOf=k=>diffDays(S.startDate,k);
+const clampKey=k=>k<S.startDate?S.startDate:k>endKey()?endKey():k;
+const nP=f=>f==='day'?90:f==='week'?13:3;
+const plist=f=>Array.from({length:nP(f)},(_,i)=>f==='day'?addDays(S.startDate,i):(f==='week'?'w':'m')+i);
+const pnum=pk=>+pk.slice(1);
+const pstart=(f,pk)=>f==='day'?pk:addDays(S.startDate,pnum(pk)*FREQ[f].len);
+const pend=(f,pk)=>{if(f==='day')return pk;const e=addDays(S.startDate,(pnum(pk)+1)*FREQ[f].len-1);return e>endKey()?endKey():e};
+const pkey=(f,k)=>{const i=Math.max(0,Math.min(89,idxOf(k)));return f==='day'?addDays(S.startDate,i):(f==='week'?'w':'m')+Math.floor(i/FREQ[f].len)};
+const plabel=(f,pk)=>f==='day'?`اليوم ${idxOf(pk)+1} · ${fDay(pk)}`:`${f==='week'?'الأسبوع':'الشهر'} ${pnum(pk)+1} · ${fShort(pstart(f,pk))} – ${fShort(pend(f,pk))}`;
+
+/* ---------- habits / tasks logic ---------- */
+const hst=(id,pk)=>(S.log[id]||{})[pk]||null;
+function setHst(id,pk,v){S.log[id]=S.log[id]||{};if(v)S.log[id][pk]=v;else delete S.log[id][pk];save()}
+const hApplies=(h,pk)=>!!(S.log[h.id]&&S.log[h.id][pk])||pend(h.freq,pk)>=h.from;
+const tApplies=(t,pk)=>t.rec?(!!(t.done&&t.done[pk])||pend(t.freq,pk)>=t.from):t.period===pk;
+const tDone=(t,pk)=>!!(t.done&&t.done[pk]);
+const tasksFor=(f,pk)=>S.tasks.filter(t=>t.freq===f&&tApplies(t,pk));
+const habitsFor=(f,pk)=>S.habits.filter(h=>h.freq===f&&hApplies(h,pk));
+function progress(f,pk){
+ const ts=tasksFor(f,pk),hb=habitsFor(f,pk);let sum=0,n=0;
+ ts.forEach(t=>{if(tDone(t,pk)){sum++;n++}});
+ hb.forEach(h=>{const s=hst(h.id,pk);if(s==='done'){sum++;n++}else if(s==='partial')sum+=.5});
+ const tot=ts.length+hb.length;
+ return{tot,sum,n,pct:tot?sum/tot:0,ts,hb};
+}
+function dayStatus(k){
+ const p=progress('day',k);
+ if(!p.tot)return'none';
+ if(p.sum>=p.tot)return'done';
+ if(p.sum>0)return'partial';
+ return k<todayKey()?'missed':'none';
+}
+/* Streak: only "done" periods count. Partial/missed breaks it.
+   The current (still open) period without an entry doesn't break the streak. */
+function streaks(h){
+ const list=plist(h.freq),log=S.log[h.id]||{};
+ let longest=0,run=0;
+ for(const k of list){if(log[k]==='done'){run++;longest=Math.max(longest,run)}else run=0}
+ const ti=idxOf(todayKey());let cur=0;
+ if(ti>=0){
+  let c=Math.min(Math.floor(ti/FREQ[h.freq].len),list.length-1);
+  if(!log[list[c]]&&ti<=89)c--;
+  while(c>=0&&log[list[c]]==='done'){cur++;c--}
+ }
+ return{cur,longest};
+}
+const noteKey=(f,pk)=>`${f}:${pk}`;
+const cat=id=>S.cats.find(c=>c.id===id);
+const chip=id=>{const c=cat(id);return c?`<span class="chip"><i style="background:${esc(c.color)}"></i>${c.icon?esc(c.icon)+' ':''}${esc(c.name||'—')}</span>`:''};
+
+/* ---------- UI state ---------- */
+let mode='day',viewDate=clampKey(todayKey()),modal=null,lastCat='',focusNew=false,lastToday=todayKey();
+
+/* ---------- small components ---------- */
+const SB=[['done','مكتمل',ICON.check],['partial','جزئي',ICON.half],['missed','لم يُنجز',ICON.x]];
+const statusBtns=(id,pk,s)=>`<div class="st">${SB.map(([v,l,ic])=>`<button class="sb ${v}${s===v?' on':''}" data-a="hs" data-h="${id}" data-p="${pk}" data-v="${v}" title="${l}" aria-label="${l}" aria-pressed="${s===v}">${ic}</button>`).join('')}</div>`;
+const legend=()=>`<div class="legend"><span><i style="background:var(--g)"></i>مكتمل</span><span><i style="background:var(--o)"></i>جزئي</span><span><i style="background:var(--r)"></i>لم يُنجز</span><span><i style="background:var(--s2);border:1px solid var(--bd)"></i>لا بيانات</span></div>`;
+const catSelect=(sel,name='c')=>`<select name="${name}"><option value="">بدون تصنيف</option>${S.cats.map(c=>`<option value="${c.id}"${c.id===sel?' selected':''}>${c.icon?esc(c.icon)+' ':''}${esc(c.name)}</option>`).join('')}</select>`;
+const strip=h=>{if(h.freq!=='day')return'';const ck=clampKey(todayKey());return`<span class="dots" title="آخر 7 أيام">${[6,5,4,3,2,1,0].map(j=>{const k=addDays(ck,-j);return k<S.startDate?'<i></i>':`<i class="d-${hst(h.id,k)||'none'}"></i>`}).join('')}</span>`};
+const badge=st=>`<span class="badge s-${st}">${{done:'يوم مكتمل',partial:'جزئي',missed:'لم يُنجز',none:'لا بيانات'}[st]}</span>`;
+function habitRow(h,pk,full){
+ const sk=streaks(h);
+ return`<div class="row"><div class="grow"><a class="nm" href="#/habit/${h.id}">${esc(h.name)}</a><div class="meta">${chip(h.catId)}<span>السلسلة: ${sk.cur}</span>${full?strip(h):''}</div></div>${statusBtns(h.id,pk,hst(h.id,pk))}${full?`<button class="ib" data-a="eh" data-h="${h.id}" aria-label="تعديل">${ICON.edit}</button><button class="ib" data-a="dh" data-h="${h.id}" aria-label="حذف">${ICON.trash}</button>`:''}</div>`;
+}
+function taskRow(t,pk){
+ const d=tDone(t,pk);
+ return`<div class="row task${d?' done':''}"><button class="ck${d?' on':''}" data-a="tt" data-t="${t.id}" data-p="${pk}" aria-label="تبديل الإنجاز">${d?ICON.check:''}</button><div class="grow"><div class="nm">${esc(t.name)}</div>${t.desc?`<div class="sub">${esc(t.desc)}</div>`:''}<div class="meta">${chip(t.catId)}${t.rec?'<span>↻ متكررة</span>':''}</div></div><button class="ib" data-a="et" data-t="${t.id}" aria-label="تعديل">${ICON.edit}</button><button class="ib" data-a="dt" data-t="${t.id}" aria-label="حذف">${ICON.trash}</button></div>`;
+}
+const quickAdd=(f,pk,ctx)=>`<form class="qa" data-f="qt" data-freq="${f}" data-p="${pk}" data-ctx="${ctx}"><input name="n" placeholder="أضف مهمة جديدة…" autocomplete="off" aria-label="اسم المهمة">${catSelect(lastCat)}<button class="btn pri" aria-label="إضافة">${ICON.plus}</button></form>`;
+const noteBox=(f,pk)=>`<textarea data-note="${noteKey(f,pk)}" placeholder="اكتب ملاحظتك هنا…">${esc(S.notes[noteKey(f,pk)]||'')}</textarea>`;
+
+/* ---------- views ---------- */
+function challengeBox(){
+ const i=idxOf(todayKey()),done=plist('day').filter(k=>dayStatus(k)==='done').length;
+ const el=Math.max(0,Math.min(90,i+1)),rate=el?Math.round(done/el*100):0;
+ let head,sub='';
+ if(i<0){head='لم يبدأ التحدي بعد';sub=`يبدأ ${fFull(S.startDate)} · بعد ${afterDays(-i)}`}
+ else if(i>89){head='انتهى التحدي';sub='90 من 90'}
+ else head=`اليوم ${i+1} من 90`;
+ return`<div class="card pad"><div class="big">${head}</div>${sub?`<div class="mu">${sub}</div>`:''}<div class="bar" style="margin-top:12px"><i style="width:${el/90*100}%"></i></div><div class="stats"><div class="stat"><b>${done}</b><span>أيام مكتملة</span></div><div class="stat"><b>${rate}%</b><span>نسبة الإنجاز</span></div><div class="stat"><b>${90-el}</b><span>أيام متبقية</span></div></div></div>`;
+}
+function vHome(){
+ const f=mode,pk=pkey(f,viewDate),p=progress(f,pk),cur=pkey(f,clampKey(todayKey()));
+ const prev=addDays(pstart(f,pk),-1),next=addDays(pend(f,pk),1);
+ const tabs=[['day','اليوم'],['week','هذا الأسبوع'],['month','هذا الشهر']];
+ const ttl={day:'تقدم اليوم',week:'تقدم الأسبوع',month:'تقدم الشهر'}[f];
+ return`${challengeBox()}
+ <div class="tabs" style="margin-top:16px" role="tablist">${tabs.map(([v,l])=>`<button class="tab${v===f?' on':''}" data-a="mode" data-v="${v}">${l}</button>`).join('')}</div>
+ <div class="pnav"><button class="ib" data-a="go" data-d="${prev}" ${prev>=S.startDate?'':'disabled'} aria-label="السابق">${ICON.back}</button><div class="grow center"><div class="lbl">${plabel(f,pk)}</div>${cur!==pk?'<button class="link" data-a="go" data-d="today">العودة إلى الحالي</button>':''}</div><button class="ib" data-a="go" data-d="${next}" ${next<=endKey()?'':'disabled'} aria-label="التالي">${ICON.fwd}</button></div>
+ <div class="card pad"><div class="sh" style="margin-bottom:8px"><h2>${ttl}</h2><span class="mu">${p.n} من ${p.tot} · ${Math.round(p.pct*100)}%</span></div><div class="bar"><i style="width:${p.pct*100}%"></i></div></div>
+ <section class="sec"><div class="sh"><h2>العادات</h2>${p.hb.length?legend().replace('class="legend"','class="legend" style="margin:0;font-size:12px;gap:10px"'):''}</div>
+ <div class="card list">${p.hb.length?p.hb.map(h=>habitRow(h,pk,false)).join(''):`<p class="empty">لا توجد عادات ${{day:'يومية',week:'أسبوعية',month:'شهرية'}[f]} حاليًا. <a class="link" href="#/habits">أضف عادة</a></p>`}</div></section>
+ <section class="sec"><div class="sh"><h2>المهام</h2><button class="link" data-a="at" data-f="${f}" data-p="${pk}">مهمة مفصّلة</button></div>
+ <div class="card list">${p.ts.map(t=>taskRow(t,pk)).join('')}${p.ts.length?'':'<p class="empty">لا مهام هنا بعد. اكتب مهمة وأضفها بسرعة.</p>'}${quickAdd(f,pk,'home')}</div></section>
+ <section class="sec"><div class="sh"><h2>ملاحظة</h2></div>${noteBox(f,pk)}</section>`;
+}
+function vHabits(){
+ const ck=clampKey(todayKey());
+ const groups=['day','week','month'].map(f=>{
+  const hs=S.habits.filter(h=>h.freq===f);if(!hs.length)return'';
+  const pk=pkey(f,ck);
+  return`<section class="sec"><div class="sh"><h2>${GT[f]}</h2><span class="mu">${plabel(f,pk)}</span></div><div class="card list">${hs.map(h=>habitRow(h,pk,true)).join('')}</div></section>`;
+ }).join('');
+ return`<div class="ph"><h1>العادات</h1><button class="btn pri" data-a="ah">${ICON.plus} عادة جديدة</button></div>${legend()}${groups||'<div class="card"><p class="empty">لم تُضف أي عادة بعد. ابدأ بعادة واحدة بسيطة.</p></div>'}`;
+}
+function calGrid(cellFn){
+ let h='<div class="grid">';
+ for(let j=0;j<7;j++)h+=`<div class="wd">${fWd(addDays(S.startDate,j))}</div>`;
+ plist('day').forEach(k=>h+=cellFn(k));
+ return h+'</div>';
+}
+function vHabit(id){
+ const h=S.habits.find(x=>x.id===id);
+ if(!h){location.hash='#/habits';return''}
+ const f=h.freq,list=plist(f),log=S.log[h.id]||{},sk=streaks(h),t=todayKey();
+ const el=list.filter(pk=>pstart(f,pk)<=t).length,dn=list.filter(pk=>log[pk]==='done').length,rate=el?Math.round(dn/el*100):0;
+ let cal;
+ if(f==='day')cal=calGrid(k=>{const s=log[k];return`<button class="cell${s?' s-'+s:''}${k===t?' today':''}" data-a="cyc" data-h="${h.id}" data-p="${k}" title="${fDay(k)}"><span class="n">${idxOf(k)+1}</span><span class="d">${parseKey(k).getDate()}</span></button>`});
+ else cal=`<div class="pgrid">${list.map(pk=>{const s=log[pk];return`<button class="cell${s?' s-'+s:''}" data-a="cyc" data-h="${h.id}" data-p="${pk}"><span class="n">${f==='week'?'الأسبوع':'الشهر'} ${pnum(pk)+1}</span><span class="d" style="display:block">${fShort(pstart(f,pk))} – ${fShort(pend(f,pk))}</span></button>`}).join('')}</div>`;
+ return`<div class="ph"><div class="grow"><a class="link" href="#/habits">← العادات</a><h1 style="unicode-bidi:plaintext">${esc(h.name)}</h1><div class="meta">${chip(h.catId)}<span>${{day:'يومية',week:'أسبوعية',month:'شهرية'}[f]}</span></div></div><button class="ib" data-a="eh" data-h="${h.id}" aria-label="تعديل">${ICON.edit}</button><button class="ib" data-a="dh" data-h="${h.id}" aria-label="حذف">${ICON.trash}</button></div>
+ <div class="stats" style="margin:0 0 16px"><div class="stat"><b>${sk.cur}</b><span>السلسلة الحالية · ${unitWord(sk.cur,f)}</span></div><div class="stat"><b>${sk.longest}</b><span>أطول سلسلة · ${unitWord(sk.longest,f)}</span></div><div class="stat"><b>${dn}</b><span>مرات الإنجاز</span></div><div class="stat"><b>${rate}%</b><span>نسبة الإنجاز</span></div></div>
+ <div class="card pad"><div class="sh"><h2>السجل</h2><span class="mu">اضغط على خانة لتغيير حالتها</span></div>${legend()}${cal}</div>`;
+}
+function vCal(){
+ const days=plist('day'),sts=days.map(dayStatus),c=s=>sts.filter(x=>x===s).length,t=todayKey();
+ const grid=calGrid(k=>{const s=dayStatus(k);return`<button class="cell${s!=='none'?' s-'+s:''}${k===t?' today':''}" data-a="day" data-d="${k}" title="${fDay(k)}"><span class="n">${idxOf(k)+1}</span><span class="d">${parseKey(k).getDate()}</span></button>`});
+ return`<div class="ph"><h1>التقويم</h1><span class="mu">${fShort(S.startDate)} – ${fShort(endKey())}</span></div>
+ <div class="stats" style="margin:0 0 16px"><div class="stat"><b style="color:var(--g)">${c('done')}</b><span>أيام مكتملة</span></div><div class="stat"><b style="color:var(--o)">${c('partial')}</b><span>أيام جزئية</span></div><div class="stat"><b style="color:var(--r)">${c('missed')}</b><span>أيام لم تُنجز</span></div></div>
+ <div class="card pad">${legend()}${grid}</div>`;
+}
+
+/* ---------- modals ---------- */
+const X=`<button class="ib x" data-a="close" aria-label="إغلاق">${ICON.x}</button>`;
+function periodField(f,val){
+ if(f==='day')return`<input type="date" name="p" min="${S.startDate}" max="${endKey()}" value="${esc(val)}" required>`;
+ return`<select name="p">${plist(f).map(pk=>`<option value="${pk}"${pk===val?' selected':''}>${f==='week'?'الأسبوع':'الشهر'} ${pnum(pk)+1} — ${fShort(pstart(f,pk))} إلى ${fShort(pend(f,pk))}</option>`).join('')}</select>`;
+}
+function modalTask(m){
+ const ex=m.id?S.tasks.find(t=>t.id===m.id):null;
+ const f0=m.freq||'day';
+ const v=ex||{name:'',desc:'',catId:lastCat,freq:f0,period:m.p||pkey(f0,viewDate),rec:false};
+ return`<div class="mh"><div class="mt">${ex?'تعديل المهمة':'مهمة جديدة'}</div>${X}</div>
+ <form data-f="task" data-id="${ex?ex.id:''}">
+ <label class="f"><span>الاسم</span><input name="name" value="${esc(v.name)}" required autofocus autocomplete="off"></label>
+ <label class="f"><span>وصف (اختياري)</span><textarea name="desc" style="min-height:64px">${esc(v.desc)}</textarea></label>
+ <label class="f"><span>التصنيف</span>${catSelect(v.catId)}</label>
+ <label class="f"><span>التكرار</span><select name="freq">${[['day','يومية'],['week','أسبوعية'],['month','شهرية']].map(([k,l])=>`<option value="${k}"${k===v.freq?' selected':''}>${l}</option>`).join('')}</select></label>
+ <label class="f"><span>الفترة / التاريخ</span><div id="pfield">${periodField(v.freq,v.period)}</div></label>
+ <label class="chk"><input type="checkbox" name="rec"${v.rec?' checked':''}> تتكرر في كل فترة ابتداءً من الفترة المحددة</label>
+ <div class="acts"><button type="button" class="btn" data-a="close">إلغاء</button><button class="btn pri">حفظ</button></div></form>`;
+}
+function modalHabit(m){
+ const ex=m.id?S.habits.find(h=>h.id===m.id):null;
+ return`<div class="mh"><div class="mt">${ex?'تعديل العادة':'عادة جديدة'}</div>${X}</div>
+ <form data-f="habit" data-id="${ex?ex.id:''}">
+ <label class="f"><span>الاسم</span><input name="name" value="${esc(ex?ex.name:'')}" required autofocus autocomplete="off"></label>
+ <label class="f"><span>التصنيف</span>${catSelect(ex?ex.catId:lastCat)}</label>
+ <label class="f"><span>التكرار</span><select name="freq" ${ex?'disabled':''}>${[['day','يومية'],['week','أسبوعية'],['month','شهرية']].map(([k,l])=>`<option value="${k}"${ex&&ex.freq===k?' selected':''}>${l}</option>`).join('')}</select></label>
+ <div class="acts"><button type="button" class="btn" data-a="close">إلغاء</button><button class="btn pri">حفظ</button></div></form>`;
+}
+function modalDay(k){
+ const p=progress('day',k),st=dayStatus(k);
+ return`<div class="mh"><div><div class="mt">اليوم ${idxOf(k)+1}</div><div class="mu">${fFull(k)}</div></div><span style="margin-inline-start:auto">${badge(st)}</span>${X.replace(' x"',' "').replace('class="ib "','class="ib"')}</div>
+ <h2>العادات</h2>${p.hb.length?p.hb.map(h=>habitRow(h,k,false)).join(''):'<p class="empty">لا توجد عادات يومية لهذا اليوم.</p>'}
+ <h2>المهام</h2>${p.ts.map(t=>taskRow(t,k)).join('')}${p.ts.length?'':'<p class="empty">لا مهام لهذا اليوم.</p>'}${quickAdd('day',k,'modal')}
+ <h2>ملاحظة</h2>${noteBox('day',k)}`;
+}
+function modalCats(){
+ return`<div class="mh"><div class="mt">التصنيفات</div>${X}</div>
+ ${S.cats.map(c=>`<div class="crow"><input type="color" value="${esc(c.color)}" data-cf="color" data-c="${c.id}"><input class="ic" data-cf="icon" data-c="${c.id}" value="${esc(c.icon)}" maxlength="2" placeholder="رمز"><input data-cf="name" data-c="${c.id}" value="${esc(c.name)}"><button class="ib" data-a="dc" data-c="${c.id}" aria-label="حذف">${ICON.trash}</button></div>`).join('')||'<p class="empty">لا توجد تصنيفات.</p>'}
+ <form class="crow" data-f="cat" style="margin-top:18px"><input type="color" name="color" value="${PALETTE[S.cats.length%PALETTE.length]}"><input class="ic" name="icon" maxlength="2" placeholder="رمز"><input name="name" placeholder="تصنيف جديد" required autocomplete="off"><button class="btn pri" aria-label="إضافة">${ICON.plus}</button></form>`;
+}
+function modalSet(){
+ return`<div class="mh"><div class="mt">الإعدادات</div>${X}</div>
+ <label class="f"><span>تاريخ بداية التحدي</span><input type="date" data-start value="${S.startDate}"></label>
+ <p class="mu" style="margin-top:6px">تغيير التاريخ يعيد حساب أرقام الأيام؛ المهام اليومية المرتبطة بتواريخ تبقى في تواريخها.</p>
+ <div class="acts" style="flex-wrap:wrap"><button class="btn" data-a="exp">تصدير نسخة احتياطية</button><label class="btn" style="cursor:pointer">استيراد<input type="file" accept="application/json" data-imp hidden></label></div>
+ <div class="acts"><button class="btn dng" data-a="rst">حذف كل البيانات</button></div>`;
+}
+const vModal=()=>`<div class="ov"><div class="md" role="dialog" aria-modal="true">${{task:modalTask,habit:modalHabit,day:m=>modalDay(m.d),cats:modalCats,set:modalSet}[modal.t](modal)}</div></div>`;
+
+/* ---------- render ---------- */
+const NAV=[['/','الرئيسية','home'],['/habits','العادات','habits'],['/calendar','التقويم','cal']];
+function render(){
+ const r=location.hash.slice(1)||'/';
+ const ms=$('.md')?$('.md').scrollTop:0;
+ $('#view').innerHTML=r==='/habits'?vHabits():r==='/calendar'?vCal():r.startsWith('/habit/')?vHabit(r.slice(7)):vHome();
+ $('#modal').innerHTML=modal?vModal():'';
+ document.body.style.overflow=modal?'hidden':'';
+ const md=$('.md');
+ if(md){md.scrollTop=ms;if(focusNew){const a=md.querySelector('[autofocus]');if(a)a.focus();focusNew=false}}
+ const cur=r.startsWith('/habit')?'/habits':r;
+ document.querySelectorAll('#dnav a,#bnav a').forEach(a=>a.classList.toggle('on',a.dataset.r===cur));
+}
+function openModal(m){modal=m;focusNew=true;render()}
+function closeModal(){modal=null;render()}
+$('#dnav').innerHTML=NAV.map(([r,l])=>`<a href="#${r}" data-r="${r}">${l}</a>`).join('');
+$('#bnav').innerHTML=NAV.map(([r,l,i])=>`<a href="#${r}" data-r="${r}">${ICON[i]}<span>${l}</span></a>`).join('');
+$('#tools').innerHTML=`<button class="ib" data-a="cats" title="التصنيفات" aria-label="التصنيفات">${ICON.tag}</button><button class="ib" data-a="set" title="الإعدادات" aria-label="الإعدادات">${ICON.gear}</button>`;
+
+/* ---------- actions ---------- */
+function act(a,d){
+ switch(a){
+ case 'mode':mode=d.v;render();break;
+ case 'go':viewDate=d.d==='today'?clampKey(todayKey()):d.d;render();break;
+ case 'hs':{const c=hst(d.h,d.p);setHst(d.h,d.p,c===d.v?null:d.v);render();break}
+ case 'cyc':{const o=[null,'done','partial','missed'];setHst(d.h,d.p,o[(o.indexOf(hst(d.h,d.p))+1)%4]);render();break}
+ case 'tt':{const t=S.tasks.find(x=>x.id===d.t);t.done=t.done||{};if(t.done[d.p])delete t.done[d.p];else t.done[d.p]=true;save();render();break}
+ case 'at':openModal({t:'task',freq:d.f,p:d.p});break;
+ case 'et':openModal({t:'task',id:d.t});break;
+ case 'dt':if(confirm('حذف هذه المهمة؟')){S.tasks=S.tasks.filter(t=>t.id!==d.t);save();render()}break;
+ case 'ah':openModal({t:'habit'});break;
+ case 'eh':openModal({t:'habit',id:d.h});break;
+ case 'dh':if(confirm('حذف العادة سيحذف سجلها بالكامل. متابعة؟')){S.habits=S.habits.filter(h=>h.id!==d.h);delete S.log[d.h];save();if(location.hash.startsWith('#/habit/'))location.hash='#/habits';else render()}break;
+ case 'day':openModal({t:'day',d:d.d});break;
+ case 'cats':openModal({t:'cats'});break;
+ case 'set':openModal({t:'set'});break;
+ case 'close':closeModal();break;
+ case 'dc':if(confirm('حذف التصنيف؟ ستبقى المهام والعادات بدون تصنيف.')){S.cats=S.cats.filter(c=>c.id!==d.c);S.tasks.forEach(t=>{if(t.catId===d.c)t.catId=''});S.habits.forEach(h=>{if(h.catId===d.c)h.catId=''});if(lastCat===d.c)lastCat='';save();render()}break;
+ case 'exp':{const b=new Blob([JSON.stringify(S,null,1)],{type:'application/json'});const l=document.createElement('a');l.href=URL.createObjectURL(b);l.download='tahaddi90-backup.json';l.click();setTimeout(()=>URL.revokeObjectURL(l.href),1000);break}
+ case 'rst':if(confirm('سيتم حذف جميع البيانات نهائيًا. هل أنت متأكد؟')){S=defaults();save();modal=null;viewDate=clampKey(todayKey());render()}break;
+ }
+}
+document.addEventListener('click',e=>{
+ const el=e.target.closest('[data-a]');
+ if(el){act(el.dataset.a,el.dataset);return}
+ if(e.target.classList.contains('ov'))closeModal();
+});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&modal)closeModal()});
+
+document.addEventListener('submit',e=>{
+ const f=e.target;if(!f.dataset||!f.dataset.f)return;
+ e.preventDefault();
+ const fd=new FormData(f);
+ switch(f.dataset.f){
+ case 'qt':{
+  const name=(fd.get('n')||'').trim();if(!name)return;
+  const freq=f.dataset.freq,p=f.dataset.p;lastCat=fd.get('c')||'';
+  S.tasks.push({id:uid(),name,desc:'',catId:lastCat,freq,period:p,rec:false,from:pstart(freq,p),done:{}});
+  save();render();
+  const i=document.querySelector(`form[data-ctx="${f.dataset.ctx}"] input[name=n]`);if(i)i.focus();
+  break}
+ case 'task':{
+  const freq=fd.get('freq'),name=(fd.get('name')||'').trim();if(!name)return;
+  let p=fd.get('p');
+  if(freq==='day')p=clampKey(p||viewDate);else if(!/^[wm]\d+$/.test(p||''))p=pkey(freq,viewDate);
+  const data={name,desc:(fd.get('desc')||'').trim(),catId:fd.get('c')||'',freq,period:p,rec:fd.get('rec')==='on',from:pstart(freq,p)};
+  if(f.dataset.id)Object.assign(S.tasks.find(t=>t.id===f.dataset.id),data);else S.tasks.push(Object.assign({id:uid(),done:{}},data));
+  lastCat=data.catId;save();closeModal();break}
+ case 'habit':{
+  const name=(fd.get('name')||'').trim();if(!name)return;
+  if(f.dataset.id){const h=S.habits.find(x=>x.id===f.dataset.id);h.name=name;h.catId=fd.get('c')||''}
+  else S.habits.push({id:uid(),name,catId:fd.get('c')||'',freq:fd.get('freq'),from:clampKey(todayKey())});
+  lastCat=fd.get('c')||'';save();closeModal();break}
+ case 'cat':{
+  const name=(fd.get('name')||'').trim();if(!name)return;
+  S.cats.push({id:uid(),name,color:fd.get('color'),icon:(fd.get('icon')||'').trim()});
+  save();render();const i=document.querySelector('form[data-f=cat] input[name=name]');if(i)i.focus();break}
+ }
+});
+document.addEventListener('input',e=>{
+ const t=e.target;
+ if(t.dataset.note!==undefined){if(t.value.trim())S.notes[t.dataset.note]=t.value;else delete S.notes[t.dataset.note];save()}
+ else if(t.dataset.cf){const c=cat(t.dataset.c);if(c){c[t.dataset.cf]=t.value;save()}}
+});
+document.addEventListener('change',e=>{
+ const t=e.target;
+ if(t.name==='freq'&&t.form&&t.form.dataset.f==='task'){$('#pfield').innerHTML=periodField(t.value,pkey(t.value,viewDate))}
+ else if(t.dataset.start!==undefined){
+  if(t.value&&confirm('تغيير تاريخ البداية يعيد حساب أرقام الأيام. متابعة؟')){S.startDate=t.value;save();viewDate=clampKey(todayKey());render()}else t.value=S.startDate;
+ }
+ else if(t.dataset.imp!==undefined&&t.files[0]){
+  const r=new FileReader();
+  r.onload=()=>{try{const o=JSON.parse(r.result);if(!Array.isArray(o.cats)||!Array.isArray(o.tasks)||!Array.isArray(o.habits))throw 0;S=Object.assign(defaults(),o);save();modal=null;viewDate=clampKey(todayKey());render()}catch(x){alert('ملف غير صالح.')}};
+  r.readAsText(t.files[0]);
+ }
+});
+window.addEventListener('hashchange',()=>{modal=null;window.scrollTo(0,0);render()});
+document.addEventListener('visibilitychange',()=>{if(!document.hidden&&lastToday!==todayKey()){lastToday=todayKey();viewDate=clampKey(todayKey());render()}});
+render();
+})();
+</script>
+</body>
+</html>
