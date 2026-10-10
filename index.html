@@ -101,19 +101,17 @@ label.chk{display:flex;gap:8px;align-items:center;margin-top:14px;color:var(--mu
 .cell:hover{border-color:#55555e}
 .cell .n{font-weight:700;font-size:15px}
 .cell .d{font-size:10.5px;color:var(--mu)}
+.cell .rt{color:var(--tx);opacity:.85}
 .cell.s-done{background:rgba(63,179,127,.17);border-color:rgba(63,179,127,.55)}
 .cell.s-partial{background:rgba(227,154,59,.17);border-color:rgba(227,154,59,.55)}
 .cell.s-missed{background:rgba(214,90,82,.17);border-color:rgba(214,90,82,.55)}
 .cell.today{outline:2px solid var(--tx);outline-offset:1px}
 .pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:8px}
 .pgrid .cell{aspect-ratio:auto;padding:12px 8px}
-.legend{display:flex;flex-wrap:wrap;gap:14px;color:var(--mu);font-size:13px;margin-bottom:14px}
+.legend{display:flex;flex-wrap:wrap;align-items:center;gap:14px;color:var(--mu);font-size:13px;margin-bottom:14px}
 .legend span{display:inline-flex;align-items:center;gap:6px}
 .legend i{width:10px;height:10px;border-radius:50%;display:inline-block}
 .badge{font-size:12.5px;padding:2px 10px;border-radius:20px;border:1px solid var(--bd);color:var(--mu);white-space:nowrap}
-.badge.s-done{color:var(--g);border-color:rgba(63,179,127,.5)}
-.badge.s-partial{color:var(--o);border-color:rgba(227,154,59,.5)}
-.badge.s-missed{color:var(--r);border-color:rgba(214,90,82,.5)}
 .empty{color:var(--mu);text-align:center;padding:22px 10px;font-size:14px}
 .ov{position:fixed;inset:0;background:rgba(0,0,0,.65);display:flex;align-items:center;justify-content:center;padding:16px;z-index:50}
 .md{background:var(--s1);border:1px solid var(--bd);border-radius:14px;width:100%;max-width:480px;max-height:90vh;overflow:auto;padding:20px}
@@ -128,13 +126,12 @@ label.chk{display:flex;gap:8px;align-items:center;margin-top:14px;color:var(--mu
 .bnav{display:none;position:fixed;bottom:0;left:0;right:0;background:var(--s1);border-top:1px solid var(--bd);padding-bottom:env(safe-area-inset-bottom);z-index:20}
 .bnav a{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 0;font-size:11.5px;color:var(--mu)}
 .bnav a.on{color:var(--tx)}
-body {background-color: red;}
 @media(max-width:700px){
  .dnav{display:none}.bnav{display:flex}
  .ov{align-items:flex-end;padding:0}
  .md{border-radius:16px 16px 0 0;max-height:92vh;max-width:none}
  .big{font-size:22px}
- .grid{gap:4px}.cell .d{display:none}
+ .grid{gap:4px}.cell .d:not(.rt){display:none}
  .row{gap:10px}
  .sb{width:32px;height:32px}
  .qa select{max-width:96px}
@@ -228,13 +225,27 @@ function progress(f,pk){
  const tot=ts.length+hb.length;
  return{tot,sum,n,pct:tot?sum/tot:0,ts,hb};
 }
-function dayStatus(k){
+
+/* ---------- day rating (0-10) ----------
+   rating = (done tasks + done habits + 0.5 × partial habits) / total items × 10
+   Returns null when there is nothing to rate (no items, or today/future with nothing done yet). */
+function dayRating(k){
  const p=progress('day',k);
- if(!p.tot)return'none';
- if(p.sum>=p.tot)return'done';
- if(p.sum>0)return'partial';
- return k<todayKey()?'missed':'none';
+ if(!p.tot)return null;
+ if(p.sum===0&&k>=todayKey())return null;
+ return Math.round(p.pct*100)/10;
 }
+const rcol=(r,a)=>`hsla(${Math.round(r*13)},60%,52%,${a})`; // hue 0 = red → 130 = green
+const fR=r=>Number.isInteger(r)?String(r):r.toFixed(1);
+function ratingStats(){
+ const rs=plist('day').map(dayRating).filter(r=>r!==null);
+ return{
+  avg:rs.length?fR(Math.round(rs.reduce((a,b)=>a+b,0)/rs.length*10)/10):'—',
+  good:rs.filter(r=>r>=8).length,
+  best:rs.length?fR(Math.max(...rs)):'—'
+ };
+}
+
 /* Streak: only "done" periods count. Partial/missed breaks it.
    The current (still open) period without an entry doesn't break the streak. */
 function streaks(h){
@@ -260,9 +271,10 @@ let mode='day',viewDate=clampKey(todayKey()),modal=null,lastCat='',focusNew=fals
 const SB=[['done','مكتمل',ICON.check],['partial','جزئي',ICON.half],['missed','لم يُنجز',ICON.x]];
 const statusBtns=(id,pk,s)=>`<div class="st">${SB.map(([v,l,ic])=>`<button class="sb ${v}${s===v?' on':''}" data-a="hs" data-h="${id}" data-p="${pk}" data-v="${v}" title="${l}" aria-label="${l}" aria-pressed="${s===v}">${ic}</button>`).join('')}</div>`;
 const legend=()=>`<div class="legend"><span><i style="background:var(--g)"></i>مكتمل</span><span><i style="background:var(--o)"></i>جزئي</span><span><i style="background:var(--r)"></i>لم يُنجز</span><span><i style="background:var(--s2);border:1px solid var(--bd)"></i>لا بيانات</span></div>`;
+const ratingLegend=()=>`<div class="legend"><span>0</span><i style="width:140px;height:8px;border-radius:4px;background:linear-gradient(to left,hsl(0,60%,52%),hsl(65,60%,52%),hsl(130,60%,52%))"></i><span>10</span><span><i style="background:var(--s2);border:1px solid var(--bd)"></i>لا بيانات</span></div>`;
 const catSelect=(sel,name='c')=>`<select name="${name}"><option value="">بدون تصنيف</option>${S.cats.map(c=>`<option value="${c.id}"${c.id===sel?' selected':''}>${c.icon?esc(c.icon)+' ':''}${esc(c.name)}</option>`).join('')}</select>`;
 const strip=h=>{if(h.freq!=='day')return'';const ck=clampKey(todayKey());return`<span class="dots" title="آخر 7 أيام">${[6,5,4,3,2,1,0].map(j=>{const k=addDays(ck,-j);return k<S.startDate?'<i></i>':`<i class="d-${hst(h.id,k)||'none'}"></i>`}).join('')}</span>`};
-const badge=st=>`<span class="badge s-${st}">${{done:'يوم مكتمل',partial:'جزئي',missed:'لم يُنجز',none:'لا بيانات'}[st]}</span>`;
+const ratingBadge=r=>r!==null?`<span class="badge" style="color:${rcol(r,1)};border-color:${rcol(r,.5)}">${fR(r)}/10</span>`:'<span class="badge">لا بيانات</span>';
 function habitRow(h,pk,full){
  const sk=streaks(h);
  return`<div class="row"><div class="grow"><a class="nm" href="#/habit/${h.id}">${esc(h.name)}</a><div class="meta">${chip(h.catId)}<span>السلسلة: ${sk.cur}</span>${full?strip(h):''}</div></div>${statusBtns(h.id,pk,hst(h.id,pk))}${full?`<button class="ib" data-a="eh" data-h="${h.id}" aria-label="تعديل">${ICON.edit}</button><button class="ib" data-a="dh" data-h="${h.id}" aria-label="حذف">${ICON.trash}</button>`:''}</div>`;
@@ -276,13 +288,13 @@ const noteBox=(f,pk)=>`<textarea data-note="${noteKey(f,pk)}" placeholder="اك�
 
 /* ---------- views ---------- */
 function challengeBox(){
- const i=idxOf(todayKey()),done=plist('day').filter(k=>dayStatus(k)==='done').length;
- const el=Math.max(0,Math.min(90,i+1)),rate=el?Math.round(done/el*100):0;
+ const i=idxOf(todayKey()),rs=ratingStats();
+ const el=Math.max(0,Math.min(90,i+1));
  let head,sub='';
  if(i<0){head='لم يبدأ التحدي بعد';sub=`يبدأ ${fFull(S.startDate)} · بعد ${afterDays(-i)}`}
  else if(i>89){head='انتهى التحدي';sub='90 من 90'}
  else head=`اليوم ${i+1} من 90`;
- return`<div class="card pad"><div class="big">${head}</div>${sub?`<div class="mu">${sub}</div>`:''}<div class="bar" style="margin-top:12px"><i style="width:${el/90*100}%"></i></div><div class="stats"><div class="stat"><b>${done}</b><span>أيام مكتملة</span></div><div class="stat"><b>${rate}%</b><span>نسبة الإنجاز</span></div><div class="stat"><b>${90-el}</b><span>أيام متبقية</span></div></div></div>`;
+ return`<div class="card pad"><div class="big">${head}</div>${sub?`<div class="mu">${sub}</div>`:''}<div class="bar" style="margin-top:12px"><i style="width:${el/90*100}%"></i></div><div class="stats"><div class="stat"><b>${rs.good}</b><span>أيام 8/10 فأكثر</span></div><div class="stat"><b>${rs.avg}${rs.avg==='—'?'':'/10'}</b><span>متوسط التقييم</span></div><div class="stat"><b>${90-el}</b><span>أيام متبقية</span></div></div></div>`;
 }
 function vHome(){
  const f=mode,pk=pkey(f,viewDate),p=progress(f,pk),cur=pkey(f,clampKey(todayKey()));
@@ -292,7 +304,7 @@ function vHome(){
  return`${challengeBox()}
  <div class="tabs" style="margin-top:16px" role="tablist">${tabs.map(([v,l])=>`<button class="tab${v===f?' on':''}" data-a="mode" data-v="${v}">${l}</button>`).join('')}</div>
  <div class="pnav"><button class="ib" data-a="go" data-d="${prev}" ${prev>=S.startDate?'':'disabled'} aria-label="السابق">${ICON.back}</button><div class="grow center"><div class="lbl">${plabel(f,pk)}</div>${cur!==pk?'<button class="link" data-a="go" data-d="today">العودة إلى الحالي</button>':''}</div><button class="ib" data-a="go" data-d="${next}" ${next<=endKey()?'':'disabled'} aria-label="التالي">${ICON.fwd}</button></div>
- <div class="card pad"><div class="sh" style="margin-bottom:8px"><h2>${ttl}</h2><span class="mu">${p.n} من ${p.tot} · ${Math.round(p.pct*100)}%</span></div><div class="bar"><i style="width:${p.pct*100}%"></i></div></div>
+ <div class="card pad"><div class="sh" style="margin-bottom:8px"><h2>${ttl}</h2><span class="mu">${p.n} من ${p.tot} · ${fR(Math.round(p.pct*100)/10)}/10</span></div><div class="bar"><i style="width:${p.pct*100}%"></i></div></div>
  <section class="sec"><div class="sh"><h2>العادات</h2>${p.hb.length?legend().replace('class="legend"','class="legend" style="margin:0;font-size:12px;gap:10px"'):''}</div>
  <div class="card list">${p.hb.length?p.hb.map(h=>habitRow(h,pk,false)).join(''):`<p class="empty">لا توجد عادات ${{day:'يومية',week:'أسبوعية',month:'شهرية'}[f]} حاليًا. <a class="link" href="#/habits">أضف عادة</a></p>`}</div></section>
  <section class="sec"><div class="sh"><h2>المهام</h2><button class="link" data-a="at" data-f="${f}" data-p="${pk}">مهمة مفصّلة</button></div>
@@ -327,11 +339,14 @@ function vHabit(id){
  <div class="card pad"><div class="sh"><h2>السجل</h2><span class="mu">اضغط على خانة لتغيير حالتها</span></div>${legend()}${cal}</div>`;
 }
 function vCal(){
- const days=plist('day'),sts=days.map(dayStatus),c=s=>sts.filter(x=>x===s).length,t=todayKey();
- const grid=calGrid(k=>{const s=dayStatus(k);return`<button class="cell${s!=='none'?' s-'+s:''}${k===t?' today':''}" data-a="day" data-d="${k}" title="${fDay(k)}"><span class="n">${idxOf(k)+1}</span><span class="d">${parseKey(k).getDate()}</span></button>`});
+ const t=todayKey(),rs=ratingStats();
+ const grid=calGrid(k=>{
+  const r=dayRating(k);
+  return`<button class="cell${k===t?' today':''}" ${r!==null?`style="background:${rcol(r,.17)};border-color:${rcol(r,.55)}"`:''} data-a="day" data-d="${k}" title="${fDay(k)}"><span class="n">${idxOf(k)+1}</span><span class="d${r!==null?' rt':''}">${r!==null?fR(r):parseKey(k).getDate()}</span></button>`;
+ });
  return`<div class="ph"><h1>التقويم</h1><span class="mu">${fShort(S.startDate)} – ${fShort(endKey())}</span></div>
- <div class="stats" style="margin:0 0 16px"><div class="stat"><b style="color:var(--g)">${c('done')}</b><span>أيام مكتملة</span></div><div class="stat"><b style="color:var(--o)">${c('partial')}</b><span>أيام جزئية</span></div><div class="stat"><b style="color:var(--r)">${c('missed')}</b><span>أيام لم تُنجز</span></div></div>
- <div class="card pad">${legend()}${grid}</div>`;
+ <div class="stats" style="margin:0 0 16px"><div class="stat"><b>${rs.avg}</b><span>متوسط التقييم</span></div><div class="stat"><b>${rs.good}</b><span>أيام 8/10 فأكثر</span></div><div class="stat"><b>${rs.best}</b><span>أفضل يوم</span></div></div>
+ <div class="card pad">${ratingLegend()}${grid}</div>`;
 }
 
 /* ---------- modals ---------- */
@@ -364,8 +379,8 @@ function modalHabit(m){
  <div class="acts"><button type="button" class="btn" data-a="close">إلغاء</button><button class="btn pri">حفظ</button></div></form>`;
 }
 function modalDay(k){
- const p=progress('day',k),st=dayStatus(k);
- return`<div class="mh"><div><div class="mt">اليوم ${idxOf(k)+1}</div><div class="mu">${fFull(k)}</div></div><span style="margin-inline-start:auto">${badge(st)}</span>${X.replace(' x"',' "').replace('class="ib "','class="ib"')}</div>
+ const p=progress('day',k),r=dayRating(k);
+ return`<div class="mh"><div><div class="mt">اليوم ${idxOf(k)+1}</div><div class="mu">${fFull(k)}</div></div><span style="margin-inline-start:auto">${ratingBadge(r)}</span>${X.replace(' x"',' "').replace('class="ib "','class="ib"')}</div>
  <h2>العادات</h2>${p.hb.length?p.hb.map(h=>habitRow(h,k,false)).join(''):'<p class="empty">لا توجد عادات يومية لهذا اليوم.</p>'}
  <h2>المهام</h2>${p.ts.map(t=>taskRow(t,k)).join('')}${p.ts.length?'':'<p class="empty">لا مهام لهذا اليوم.</p>'}${quickAdd('day',k,'modal')}
  <h2>ملاحظة</h2>${noteBox('day',k)}`;
