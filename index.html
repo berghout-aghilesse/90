@@ -101,7 +101,7 @@ label.chk{display:flex;gap:8px;align-items:center;margin-top:14px;color:var(--mu
 .cell:hover{border-color:#55555e}
 .cell .n{font-weight:700;font-size:15px}
 .cell .d{font-size:10.5px;color:var(--mu)}
-.cell .rt{color:var(--tx);opacity:.85}
+.cell .rt{color:inherit;opacity:.85}
 .cell.s-done{background:rgba(63,179,127,.17);border-color:rgba(63,179,127,.55)}
 .cell.s-partial{background:rgba(227,154,59,.17);border-color:rgba(227,154,59,.55)}
 .cell.s-missed{background:rgba(214,90,82,.17);border-color:rgba(214,90,82,.55)}
@@ -235,7 +235,9 @@ function dayRating(k){
  if(p.sum===0&&k>=todayKey())return null;
  return Math.round(p.pct*100)/10;
 }
-const rcol=(r,a)=>`hsla(${Math.round(r*13)},60%,52%,${a})`; // hue 0 = red → 130 = green
+const rcol=(r,a)=>`hsla(${Math.round(r*13)},55%,42%,${a})`; // hue 0 = red → 130 = green
+const rbg=r=>`hsl(${Math.round(r*13)},50%,30%)`;
+const rbd=r=>`hsl(${Math.round(r*13)},55%,40%)`;
 const fR=r=>Number.isInteger(r)?String(r):r.toFixed(1);
 function ratingStats(){
  const rs=plist('day').map(dayRating).filter(r=>r!==null);
@@ -271,7 +273,7 @@ let mode='day',viewDate=clampKey(todayKey()),modal=null,lastCat='',focusNew=fals
 const SB=[['done','مكتمل',ICON.check],['partial','جزئي',ICON.half],['missed','لم يُنجز',ICON.x]];
 const statusBtns=(id,pk,s)=>`<div class="st">${SB.map(([v,l,ic])=>`<button class="sb ${v}${s===v?' on':''}" data-a="hs" data-h="${id}" data-p="${pk}" data-v="${v}" title="${l}" aria-label="${l}" aria-pressed="${s===v}">${ic}</button>`).join('')}</div>`;
 const legend=()=>`<div class="legend"><span><i style="background:var(--g)"></i>مكتمل</span><span><i style="background:var(--o)"></i>جزئي</span><span><i style="background:var(--r)"></i>لم يُنجز</span><span><i style="background:var(--s2);border:1px solid var(--bd)"></i>لا بيانات</span></div>`;
-const ratingLegend=()=>`<div class="legend"><span>0</span><i style="width:140px;height:8px;border-radius:4px;background:linear-gradient(to left,hsl(0,60%,52%),hsl(65,60%,52%),hsl(130,60%,52%))"></i><span>10</span><span><i style="background:var(--s2);border:1px solid var(--bd)"></i>لا بيانات</span></div>`;
+const ratingLegend=()=>`<div class="legend"><span>0</span><i style="width:140px;height:8px;border-radius:4px;background:linear-gradient(to left,hsl(0,50%,30%),hsl(65,50%,30%),hsl(130,50%,30%))"></i><span>10</span><span><i style="background:var(--s2);border:1px solid var(--bd)"></i>لا بيانات</span></div>`;
 const catSelect=(sel,name='c')=>`<select name="${name}"><option value="">بدون تصنيف</option>${S.cats.map(c=>`<option value="${c.id}"${c.id===sel?' selected':''}>${c.icon?esc(c.icon)+' ':''}${esc(c.name)}</option>`).join('')}</select>`;
 const strip=h=>{if(h.freq!=='day')return'';const ck=clampKey(todayKey());return`<span class="dots" title="آخر 7 أيام">${[6,5,4,3,2,1,0].map(j=>{const k=addDays(ck,-j);return k<S.startDate?'<i></i>':`<i class="d-${hst(h.id,k)||'none'}"></i>`}).join('')}</span>`};
 const ratingBadge=r=>r!==null?`<span class="badge" style="color:${rcol(r,1)};border-color:${rcol(r,.5)}">${fR(r)}/10</span>`:'<span class="badge">لا بيانات</span>';
@@ -342,8 +344,8 @@ function vCal(){
  const t=todayKey(),rs=ratingStats();
  const grid=calGrid(k=>{
   const r=dayRating(k);
-  return`<button class="cell${k===t?' today':''}" ${r!==null?`style="background:${rcol(r,.17)};border-color:${rcol(r,.55)}"`:''} data-a="day" data-d="${k}" title="${fDay(k)}"><span class="n">${idxOf(k)+1}</span><span class="d${r!==null?' rt':''}">${r!==null?fR(r):parseKey(k).getDate()}</span></button>`;
- });
+  return`<button class="cell${k===t?' today':''}" ${r!==null?`style="background:${rbg(r)};border-color:${rbd(r)};color:#fff"`:''} data-a="day" data-d="${k}" title="${fDay(k)}"><span class="n">${idxOf(k)+1}</span><span class="d${r!==null?' rt':''}">${r!==null?fR(r):parseKey(k).getDate()}</span></button>`;
+});
  return`<div class="ph"><h1>التقويم</h1><span class="mu">${fShort(S.startDate)} – ${fShort(endKey())}</span></div>
  <div class="stats" style="margin:0 0 16px"><div class="stat"><b>${rs.avg}</b><span>متوسط التقييم</span></div><div class="stat"><b>${rs.good}</b><span>أيام 8/10 فأكثر</span></div><div class="stat"><b>${rs.best}</b><span>أفضل يوم</span></div></div>
  <div class="card pad">${ratingLegend()}${grid}</div>`;
